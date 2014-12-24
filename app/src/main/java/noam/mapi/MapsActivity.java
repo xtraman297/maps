@@ -87,6 +87,9 @@ public class MapsActivity extends FragmentActivity
     public void onConnected(Bundle bundle) {
         setUpMapIfNeeded();
         this.mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos"));
+        LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.02,getDeviceLocation().longitude + 0.02);
+
+        mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
         this.cuMyInitPos = new CameraPosition.Builder().target(getDeviceLocation())
                         .zoom(5.5f)
                         .build();
@@ -180,10 +183,11 @@ public class MapsActivity extends FragmentActivity
     private void setUpMap() {
         // Act only if connected to Maps and location API
         if (this.clGoogleClient.isConnected()) {
-            mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos"));
-            LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 10,getDeviceLocation().longitude + 10);
+
+            LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.02,getDeviceLocation().longitude + 0.02);
 
             mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
+            mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("My1Pos"));
         }
         else {
 

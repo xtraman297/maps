@@ -181,6 +181,9 @@ public class MapsActivity extends FragmentActivity
         // Act only if connected to Maps and location API
         if (this.clGoogleClient.isConnected()) {
             mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos"));
+            LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 10,getDeviceLocation().longitude + 10);
+
+            mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
         }
         else {
 

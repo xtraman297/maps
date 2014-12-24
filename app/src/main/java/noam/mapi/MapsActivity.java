@@ -13,6 +13,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -88,7 +89,7 @@ public class MapsActivity extends FragmentActivity
         setUpMapIfNeeded();
         this.mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos"));
         this.cuMyInitPos = new CameraPosition.Builder().target(getDeviceLocation())
-                        .zoom(5.5f)
+                        .zoom(15.5f)
                         .build();
         this.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cuMyInitPos));
     }
@@ -150,6 +151,7 @@ public class MapsActivity extends FragmentActivity
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    //.newInstance(new GoogleMapOptions().zoomGesturesEnabled(false)).getMap();
                     .getMap();
 
             // Add more basic attributes to the main map

@@ -134,6 +134,7 @@ public class MapsActivity extends FragmentActivity
                 this.mResolvingError = true;
                 result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
             }
+            // This may be with errors
             catch (IntentSender.SendIntentException exception) {
                 // Try again to connect
                 this.clGoogleClient.connect();

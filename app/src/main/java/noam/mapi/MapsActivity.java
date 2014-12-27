@@ -3,6 +3,7 @@ package noam.mapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,9 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 //import com.google.android.gms.location
@@ -91,16 +94,26 @@ public class MapsActivity extends FragmentActivity
         setUpMapIfNeeded();
         this.mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos"));
         LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.002,getDeviceLocation().longitude + 0.002);
+        this.mMap.addMarker(new MarkerOptions().position(getDeviceLocation())
+                    .title("MyPos")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.noam)));
+
+        LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.02,getDeviceLocation().longitude + 0.02);
 
         mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
         this.cuMyInitPos = new CameraPosition.Builder().target(getDeviceLocation())
-                        .zoom(5.5f)
+                        .zoom(15.5f)
                         .build();
         this.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cuMyInitPos));
 
         //this creates the location manager and listener
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
+        mMap.addCircle(new CircleOptions()
+                .center(getDeviceLocation())
+                .radius(400)
+                .strokeColor(Color.RED)
+                .fillColor(Color.argb(30,60,50,40)));
     }
 
     @Override
@@ -160,7 +173,11 @@ public class MapsActivity extends FragmentActivity
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+//                    .newInstance(new GoogleMapOptions().zoomGesturesEnabled(false)).getMap();
                     .getMap();
+
+            // Add more map options
+            mMap.getUiSettings().setZoomGesturesEnabled(false);
 
             // Add more basic attributes to the main map
 //            mMap
@@ -174,7 +191,7 @@ public class MapsActivity extends FragmentActivity
     /**
      * A method to contain the camera zoom level at maximum and minimum
      * TODO:implement later
-     * @param position
+     * @param position - Camera position
      */
     @Override
     public void onCameraChange(CameraPosition position) {
@@ -191,9 +208,6 @@ public class MapsActivity extends FragmentActivity
         // Act only if connected to Maps and location API
         if (this.clGoogleClient.isConnected()) {
             mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("My1Pos"));
-        }
-        else {
-
         }
     }
 

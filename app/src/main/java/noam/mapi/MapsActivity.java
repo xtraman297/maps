@@ -6,6 +6,9 @@ import android.content.IntentSender;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.Location;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -87,13 +90,17 @@ public class MapsActivity extends FragmentActivity
     public void onConnected(Bundle bundle) {
         setUpMapIfNeeded();
         this.mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos"));
-        LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.02,getDeviceLocation().longitude + 0.02);
+        LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.002,getDeviceLocation().longitude + 0.002);
 
         mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
         this.cuMyInitPos = new CameraPosition.Builder().target(getDeviceLocation())
                         .zoom(5.5f)
                         .build();
         this.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cuMyInitPos));
+
+        //this creates the location manager and listener
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
     }
 
     @Override
@@ -183,10 +190,6 @@ public class MapsActivity extends FragmentActivity
     private void setUpMap() {
         // Act only if connected to Maps and location API
         if (this.clGoogleClient.isConnected()) {
-
-            LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.02,getDeviceLocation().longitude + 0.02);
-
-            mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
             mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("My1Pos"));
         }
         else {
@@ -199,4 +202,31 @@ public class MapsActivity extends FragmentActivity
                 (LocationServices.FusedLocationApi.getLastLocation(this.clGoogleClient)).getLatitude(),
                 (LocationServices.FusedLocationApi.getLastLocation(this.clGoogleClient)).getLongitude());
     }
+
+    public final LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //here we should delete the older markers
+            //This will happen for every change
+            mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos2"));
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            // TODO Auto-generated method stub
+
+        }
+    };
 }

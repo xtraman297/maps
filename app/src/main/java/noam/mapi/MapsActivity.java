@@ -98,8 +98,6 @@ public class MapsActivity extends FragmentActivity
                     .title("MyPos")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.noam)));
 
-        LatLng Moshe_Test = new LatLng(getDeviceLocation().latitude + 0.02,getDeviceLocation().longitude + 0.02);
-
         mMap.addMarker(new MarkerOptions().position(Moshe_Test).title("Fuck"));
         this.cuMyInitPos = new CameraPosition.Builder().target(getDeviceLocation())
                         .zoom(15.5f)

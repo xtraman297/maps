@@ -111,7 +111,7 @@ public class MapsActivity extends FragmentActivity
                 .center(getDeviceLocation())
                 .radius(400)
                 .strokeColor(Color.RED)
-                .fillColor(Color.argb(30,60,50,40)));
+                .fillColor(Color.argb(30, 60, 50, 40)));
     }
 
     @Override
@@ -119,6 +119,7 @@ public class MapsActivity extends FragmentActivity
 
     }
 
+    @android.annotation.TargetApi(android.os.Build.VERSION_CODES.DONUT)
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         // This callback is important for handling errors that
@@ -129,20 +130,22 @@ public class MapsActivity extends FragmentActivity
         // Kick out if there is resolution currently going
         if (this.mResolvingError) {
             return;
-        } else if (result.hasResolution()) {
-            try {
-                this.mResolvingError = true;
-                result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+        } else {
+            if (result.hasResolution()) {
+                try {
+                    this.mResolvingError = true;
+                    result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+                }
+                // This may be with errors
+                catch (IntentSender.SendIntentException exception) {
+                    // Try again to connect
+                    this.clGoogleClient.connect();
+                }
             }
-            // This may be with errors
-            catch (IntentSender.SendIntentException exception) {
-                // Try again to connect
-                this.clGoogleClient.connect();
+            // Resolution failed
+            else {
+                Log.e("NoamTesting", "Resolution and connection failed at MapsAcivity");
             }
-        }
-        // Resolution failed
-        else {
-            Log.e("NoamTesting", "Resolution and connection failed at MapsAcivity");
         }
     }
 
@@ -221,7 +224,7 @@ public class MapsActivity extends FragmentActivity
         public void onLocationChanged(final Location location) {
             //here we should delete the older markers
             //This will happen for every change
-            mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos2"));
+            mMap.addMarker(new MarkerOptions().position(getDeviceLocation()).title("MyPos32"));
         }
 
         @Override
